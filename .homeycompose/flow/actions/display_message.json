@@ -1,0 +1,22 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    },
+    {
+      "type": "text",
+      "name": "message",
+      "title": {
+        "en": "Message",
+        "nl": "Bericht"
+      }
+    }
+  ],
+  "id": "display_message",
+  "title": {
+    "en": "Show message [[message]] on TV",
+    "nl": "Toon bericht [[message]] op TV"
+  }
+}

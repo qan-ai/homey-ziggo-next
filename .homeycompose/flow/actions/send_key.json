@@ -1,0 +1,22 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    },
+    {
+      "type": "autocomplete",
+      "name": "key",
+      "title": {
+        "en": "Key",
+        "nl": "Toets"
+      }
+    }
+  ],
+  "id": "send_key",
+  "title": {
+    "en": "Press remote key [[key]]",
+    "nl": "Druk toets [[key]]"
+  }
+}

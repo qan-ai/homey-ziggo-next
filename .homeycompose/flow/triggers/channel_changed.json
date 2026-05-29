@@ -1,0 +1,25 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "tokens": [
+    {
+      "type": "string",
+      "example": "NPO 1",
+      "name": "channel",
+      "title": {
+        "en": "Channel",
+        "nl": "Zender"
+      }
+    }
+  ],
+  "id": "channel_changed",
+  "title": {
+    "en": "Channel changed",
+    "nl": "Zender gewijzigd"
+  }
+}

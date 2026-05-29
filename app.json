@@ -28,6 +28,518 @@
     "name": "Community port of Sholofly/lghorizon"
   },
   "brandColor": "#F36F21",
+  "flow": {
+    "triggers": [
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "box_turned_off",
+        "title": {
+          "en": "Box turned off",
+          "nl": "Box ging uit"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "box_turned_on",
+        "title": {
+          "en": "Box turned on",
+          "nl": "Box ging aan"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "tokens": [
+          {
+            "type": "string",
+            "example": "NPO 1",
+            "name": "channel",
+            "title": {
+              "en": "Channel",
+              "nl": "Zender"
+            }
+          }
+        ],
+        "id": "channel_changed",
+        "title": {
+          "en": "Channel changed",
+          "nl": "Zender gewijzigd"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "tokens": [
+          {
+            "type": "string",
+            "example": "The Voice",
+            "name": "title",
+            "title": {
+              "en": "Title",
+              "nl": "Titel"
+            }
+          },
+          {
+            "type": "string",
+            "example": "RTL 4",
+            "name": "channel",
+            "title": {
+              "en": "Channel",
+              "nl": "Zender"
+            }
+          }
+        ],
+        "id": "now_playing_changed",
+        "title": {
+          "en": "Now playing changed",
+          "nl": "Nu te zien gewijzigd"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "playback_paused",
+        "title": {
+          "en": "Playback paused",
+          "nl": "Afspelen gepauzeerd"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "playback_resumed",
+        "title": {
+          "en": "Playback resumed",
+          "nl": "Afspelen hervat"
+        }
+      }
+    ],
+    "conditions": [
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          },
+          {
+            "type": "autocomplete",
+            "name": "channel",
+            "title": {
+              "en": "Channel",
+              "nl": "Zender"
+            }
+          }
+        ],
+        "id": "current_channel_is",
+        "title": {
+          "en": "Current channel !{{is|isn't}} [[channel]]",
+          "nl": "Huidige zender !{{is|is niet}} [[channel]]"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "is_on",
+        "title": {
+          "en": "Box !{{is|isn't}} on",
+          "nl": "Box staat !{{wel|niet}} aan"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "is_playing",
+        "title": {
+          "en": "Box !{{is|isn't}} playing",
+          "nl": "Box speelt !{{wel|niet}} af"
+        }
+      }
+    ],
+    "actions": [
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "channel_down",
+        "title": {
+          "en": "Previous channel",
+          "nl": "Vorige zender"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "channel_up",
+        "title": {
+          "en": "Next channel",
+          "nl": "Volgende zender"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          },
+          {
+            "type": "text",
+            "name": "message",
+            "title": {
+              "en": "Message",
+              "nl": "Bericht"
+            }
+          }
+        ],
+        "id": "display_message",
+        "title": {
+          "en": "Show message [[message]] on TV",
+          "nl": "Toon bericht [[message]] op TV"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "fast_forward",
+        "title": {
+          "en": "Fast forward",
+          "nl": "Vooruitspoelen"
+        }
+      },
+      {
+        "tokens": [
+          {
+            "type": "string",
+            "example": "NOS Journaal",
+            "name": "title",
+            "title": {
+              "en": "Title",
+              "nl": "Titel"
+            }
+          },
+          {
+            "type": "string",
+            "example": "Het laatste nieuws.",
+            "name": "description",
+            "title": {
+              "en": "Description",
+              "nl": "Beschrijving"
+            }
+          },
+          {
+            "type": "string",
+            "example": "NPO 1",
+            "name": "channel",
+            "title": {
+              "en": "Channel",
+              "nl": "Zender"
+            }
+          },
+          {
+            "type": "string",
+            "example": "20:00",
+            "name": "start_time",
+            "title": {
+              "en": "Start time",
+              "nl": "Begintijd"
+            }
+          },
+          {
+            "type": "string",
+            "example": "20:30",
+            "name": "end_time",
+            "title": {
+              "en": "End time",
+              "nl": "Eindtijd"
+            }
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          },
+          {
+            "type": "autocomplete",
+            "name": "channel",
+            "title": {
+              "en": "Channel",
+              "nl": "Zender"
+            }
+          }
+        ],
+        "titleFormatted": {
+          "en": "Get the program now airing on [[channel]]",
+          "nl": "Haal het programma dat nu speelt op [[channel]]"
+        },
+        "id": "get_current_program",
+        "title": {
+          "en": "Get current program on [[channel]]",
+          "nl": "Haal huidig programma op [[channel]]"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "pause",
+        "title": {
+          "en": "Pause",
+          "nl": "Pauzeren"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "play",
+        "title": {
+          "en": "Play",
+          "nl": "Afspelen"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          },
+          {
+            "type": "autocomplete",
+            "name": "recording",
+            "title": {
+              "en": "Recording",
+              "nl": "Opname"
+            }
+          }
+        ],
+        "id": "play_recording",
+        "title": {
+          "en": "Play recording [[recording]]",
+          "nl": "Speel opname [[recording]]"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "power_off",
+        "title": {
+          "en": "Turn box off",
+          "nl": "Box uitzetten"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "power_on",
+        "title": {
+          "en": "Turn box on",
+          "nl": "Box aanzetten"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "record",
+        "title": {
+          "en": "Record",
+          "nl": "Opnemen"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "rewind",
+        "title": {
+          "en": "Rewind",
+          "nl": "Terugspoelen"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          },
+          {
+            "type": "autocomplete",
+            "name": "key",
+            "title": {
+              "en": "Key",
+              "nl": "Toets"
+            }
+          }
+        ],
+        "id": "send_key",
+        "title": {
+          "en": "Press remote key [[key]]",
+          "nl": "Druk toets [[key]]"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          },
+          {
+            "type": "autocomplete",
+            "name": "channel",
+            "title": {
+              "en": "Channel",
+              "nl": "Zender"
+            }
+          }
+        ],
+        "id": "set_channel",
+        "title": {
+          "en": "Set channel [[channel]]",
+          "nl": "Zet zender [[channel]]"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          },
+          {
+            "title": {
+              "en": "Number",
+              "nl": "Nummer"
+            },
+            "type": "number",
+            "step": 1,
+            "name": "number",
+            "min": 0
+          }
+        ],
+        "id": "set_channel_number",
+        "title": {
+          "en": "Set channel by number [[number]]",
+          "nl": "Zet zender op nummer [[number]]"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "skip_ad_break",
+        "title": {
+          "en": "Skip ad break",
+          "nl": "Reclame overslaan"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
+        "id": "stop",
+        "title": {
+          "en": "Stop",
+          "nl": "Stoppen"
+        }
+      }
+    ]
+  },
   "drivers": [
     {
       "name": {

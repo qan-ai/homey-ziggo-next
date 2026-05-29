@@ -1,0 +1,22 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    },
+    {
+      "type": "autocomplete",
+      "name": "channel",
+      "title": {
+        "en": "Channel",
+        "nl": "Zender"
+      }
+    }
+  ],
+  "id": "set_channel",
+  "title": {
+    "en": "Set channel [[channel]]",
+    "nl": "Zet zender [[channel]]"
+  }
+}

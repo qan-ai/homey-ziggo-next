@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "is_on",
+  "title": {
+    "en": "Box !{{is|isn't}} on",
+    "nl": "Box staat !{{wel|niet}} aan"
+  }
+}

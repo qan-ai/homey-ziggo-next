@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "stop",
+  "title": {
+    "en": "Stop",
+    "nl": "Stoppen"
+  }
+}

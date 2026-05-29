@@ -1,0 +1,22 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    },
+    {
+      "type": "autocomplete",
+      "name": "recording",
+      "title": {
+        "en": "Recording",
+        "nl": "Opname"
+      }
+    }
+  ],
+  "id": "play_recording",
+  "title": {
+    "en": "Play recording [[recording]]",
+    "nl": "Speel opname [[recording]]"
+  }
+}

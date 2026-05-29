@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "playback_paused",
+  "title": {
+    "en": "Playback paused",
+    "nl": "Afspelen gepauzeerd"
+  }
+}

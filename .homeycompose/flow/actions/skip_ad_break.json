@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "skip_ad_break",
+  "title": {
+    "en": "Skip ad break",
+    "nl": "Reclame overslaan"
+  }
+}

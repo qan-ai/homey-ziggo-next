@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "playback_resumed",
+  "title": {
+    "en": "Playback resumed",
+    "nl": "Afspelen hervat"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "fast_forward",
+  "title": {
+    "en": "Fast forward",
+    "nl": "Vooruitspoelen"
+  }
+}

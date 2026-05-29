@@ -1,0 +1,73 @@
+{
+  "tokens": [
+    {
+      "type": "string",
+      "example": "NOS Journaal",
+      "name": "title",
+      "title": {
+        "en": "Title",
+        "nl": "Titel"
+      }
+    },
+    {
+      "type": "string",
+      "example": "Het laatste nieuws.",
+      "name": "description",
+      "title": {
+        "en": "Description",
+        "nl": "Beschrijving"
+      }
+    },
+    {
+      "type": "string",
+      "example": "NPO 1",
+      "name": "channel",
+      "title": {
+        "en": "Channel",
+        "nl": "Zender"
+      }
+    },
+    {
+      "type": "string",
+      "example": "20:00",
+      "name": "start_time",
+      "title": {
+        "en": "Start time",
+        "nl": "Begintijd"
+      }
+    },
+    {
+      "type": "string",
+      "example": "20:30",
+      "name": "end_time",
+      "title": {
+        "en": "End time",
+        "nl": "Eindtijd"
+      }
+    }
+  ],
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    },
+    {
+      "type": "autocomplete",
+      "name": "channel",
+      "title": {
+        "en": "Channel",
+        "nl": "Zender"
+      }
+    }
+  ],
+  "titleFormatted": {
+    "en": "Get the program now airing on [[channel]]",
+    "nl": "Haal het programma dat nu speelt op [[channel]]"
+  },
+  "id": "get_current_program",
+  "title": {
+    "en": "Get current program on [[channel]]",
+    "nl": "Haal huidig programma op [[channel]]"
+  }
+}

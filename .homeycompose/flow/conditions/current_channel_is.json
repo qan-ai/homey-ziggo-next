@@ -1,0 +1,22 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    },
+    {
+      "type": "autocomplete",
+      "name": "channel",
+      "title": {
+        "en": "Channel",
+        "nl": "Zender"
+      }
+    }
+  ],
+  "id": "current_channel_is",
+  "title": {
+    "en": "Current channel !{{is|isn't}} [[channel]]",
+    "nl": "Huidige zender !{{is|is niet}} [[channel]]"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    },
+    {
+      "title": {
+        "en": "Number",
+        "nl": "Nummer"
+      },
+      "type": "number",
+      "step": 1,
+      "name": "number",
+      "min": 0
+    }
+  ],
+  "id": "set_channel_number",
+  "title": {
+    "en": "Set channel by number [[number]]",
+    "nl": "Zet zender op nummer [[number]]"
+  }
+}

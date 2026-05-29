@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "power_on",
+  "title": {
+    "en": "Turn box on",
+    "nl": "Box aanzetten"
+  }
+}

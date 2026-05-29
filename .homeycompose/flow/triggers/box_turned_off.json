@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "box_turned_off",
+  "title": {
+    "en": "Box turned off",
+    "nl": "Box ging uit"
+  }
+}

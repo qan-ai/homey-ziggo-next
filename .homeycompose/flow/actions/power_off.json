@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "power_off",
+  "title": {
+    "en": "Turn box off",
+    "nl": "Box uitzetten"
+  }
+}
