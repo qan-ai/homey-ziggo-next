@@ -54,13 +54,6 @@ Voeg het apparaat **Mediabox** toe en log in met je **Ziggo-account**
 (e-mail/gebruikersnaam + wachtwoord). De app haalt automatisch de boxen op je
 account op.
 
-## Niet ondersteund: KPN
-
-KPN draait **niet** op het Horizon/Liberty Global-platform en zit niet in de
-`lghorizon`-package (`COUNTRY_SETTINGS` kent o.a. Ziggo NL, Telenet BE, Virgin GB/IE,
-UPC CH/PL — geen KPN). KPN iTV/KPN Box gebruikt een eigen backend en zou een
-afzonderlijke integratie vereisen.
-
 ## Credits
 
 Gebaseerd op het werk van **@Sholofly** en bijdragers aan `lghorizon`.
