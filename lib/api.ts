@@ -90,16 +90,6 @@ export class LGHorizonApi {
     return this._channels;
   }
 
-  /** Diagnostic snapshot of the MQTT client (for troubleshooting). */
-  getMqttStatus(): { connected: boolean; messageCount: number; lastTopic: string; lastError: string } {
-    return {
-      connected: this._mqttClient ? this._mqttClient.isConnected : false,
-      messageCount: this._mqttClient ? this._mqttClient.messageCount : 0,
-      lastTopic: this._mqttClient ? this._mqttClient.lastTopic : '',
-      lastError: this._mqttClient ? this._mqttClient.lastError : '',
-    };
-  }
-
   get hasCloudRecording(): boolean {
     this._assertInitialized();
     return this._customer.hasCloudRecording;

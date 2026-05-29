@@ -17,9 +17,6 @@ export class LGHorizonMqttClient {
 
   private _disconnectRequested = false;
   private _connected = false;
-  messageCount = 0;
-  lastTopic = '';
-  lastError = '';
 
   // FIFO processing of incoming messages so handlers never overlap.
   private _messageQueue: Array<{ topic: string; payload: Buffer }> = [];
@@ -84,7 +81,6 @@ export class LGHorizonMqttClient {
 
     this._client.on('error', (err: Error) => {
       this._log('MQTT error:', err.message);
-      this.lastError = err.message;
       if (/not authorized/i.test(err.message)) {
         void this._refreshTokenAndReconnect();
       }
@@ -167,8 +163,6 @@ export class LGHorizonMqttClient {
     try {
       while (this._messageQueue.length > 0) {
         const { topic, payload } = this._messageQueue.shift()!;
-        this.messageCount++;
-        this.lastTopic = topic;
         try {
           const json = JSON.parse(payload.toString());
           await this._onMessage(json, topic);
