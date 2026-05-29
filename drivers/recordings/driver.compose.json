@@ -1,0 +1,31 @@
+{
+  "name": { "en": "Recordings", "nl": "Opnames" },
+  "class": "sensor",
+  "platforms": ["local"],
+  "capabilities": ["mediabox_recording_quota", "mediabox_recording_count"],
+  "images": {
+    "small": "/drivers/recordings/assets/images/small.png",
+    "large": "/drivers/recordings/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "login_credentials",
+      "template": "login_credentials",
+      "options": {
+        "title": { "en": "Log in with your Ziggo account", "nl": "Log in met je Ziggo-account" },
+        "usernameLabel": { "en": "Email / username", "nl": "E-mail / gebruikersnaam" },
+        "passwordLabel": { "en": "Password", "nl": "Wachtwoord" }
+      },
+      "navigation": { "next": "list_devices" }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

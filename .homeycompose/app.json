@@ -1,0 +1,26 @@
+{
+  "id": "io.github.sholofly.ziggonext",
+  "version": "1.0.0",
+  "compatibility": ">=12.2.0",
+  "sdk": 3,
+  "platforms": ["local"],
+  "name": {
+    "en": "Ziggo Next",
+    "nl": "Ziggo Next"
+  },
+  "description": {
+    "en": "Control your Ziggo Next mediabox (and Mini) from Homey.",
+    "nl": "Bedien je Ziggo Next mediabox (en Mini) vanuit Homey."
+  },
+  "category": ["video"],
+  "permissions": [],
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "Community port of Sholofly/lghorizon"
+  },
+  "brandColor": "#F36F21"
+}

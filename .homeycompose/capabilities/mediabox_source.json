@@ -1,0 +1,8 @@
+{
+  "type": "string",
+  "title": { "en": "Source", "nl": "Bron" },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/source.svg"
+}

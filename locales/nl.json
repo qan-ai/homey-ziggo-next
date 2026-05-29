@@ -1,0 +1,19 @@
+{
+  "errors": {
+    "invalid_credentials": "Ongeldige gebruikersnaam of wachtwoord.",
+    "connection": "Kon geen verbinding maken met Ziggo. Probeer het later opnieuw.",
+    "box_not_found": "Deze mediabox is niet meer gekoppeld aan je account.",
+    "box_offline": "De mediabox is offline.",
+    "no_recording": "Dit account heeft geen opname-abonnement (PVR)."
+  },
+  "recordings": {
+    "device_name": "Opnames"
+  },
+  "source": {
+    "linear": "Live TV",
+    "replay": "Replay",
+    "recording": "Opname",
+    "reviewbuffer": "TV pauzeren",
+    "vod": "On demand"
+  }
+}

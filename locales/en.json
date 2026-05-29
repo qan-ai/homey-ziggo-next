@@ -1,0 +1,19 @@
+{
+  "errors": {
+    "invalid_credentials": "Invalid username or password.",
+    "connection": "Could not connect to Ziggo. Please try again later.",
+    "box_not_found": "This mediabox is no longer linked to your account.",
+    "box_offline": "The mediabox is offline.",
+    "no_recording": "This account has no recording (PVR) subscription."
+  },
+  "recordings": {
+    "device_name": "Recordings"
+  },
+  "source": {
+    "linear": "Live TV",
+    "replay": "Replay",
+    "recording": "Recording",
+    "reviewbuffer": "Pause TV",
+    "vod": "On demand"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "type": "number",
+  "title": { "en": "Recordings", "nl": "Opnames" },
+  "decimals": 0,
+  "min": 0,
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/assets/capabilities/quota.svg"
+}

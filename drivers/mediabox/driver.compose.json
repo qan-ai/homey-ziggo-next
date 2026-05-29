@@ -1,0 +1,44 @@
+{
+  "name": { "en": "Mediabox", "nl": "Mediabox" },
+  "class": "tv",
+  "platforms": ["local"],
+  "capabilities": [
+    "onoff",
+    "speaker_playing",
+    "speaker_prev",
+    "speaker_next",
+    "mediabox_channel",
+    "mediabox_title",
+    "mediabox_source",
+    "mediabox_recording_quota"
+  ],
+  "capabilitiesOptions": {
+    "speaker_prev": { "title": { "en": "Previous channel", "nl": "Vorige zender" } },
+    "speaker_next": { "title": { "en": "Next channel", "nl": "Volgende zender" } }
+  },
+  "images": {
+    "small": "/drivers/mediabox/assets/images/small.png",
+    "large": "/drivers/mediabox/assets/images/large.png"
+  },
+  "pair": [
+    {
+      "id": "login_credentials",
+      "template": "login_credentials",
+      "options": {
+        "title": { "en": "Log in with your Ziggo account", "nl": "Log in met je Ziggo-account" },
+        "usernameLabel": { "en": "Email / username", "nl": "E-mail / gebruikersnaam" },
+        "passwordLabel": { "en": "Password", "nl": "Wachtwoord" }
+      },
+      "navigation": { "next": "list_devices" }
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": { "next": "add_devices" }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ]
+}

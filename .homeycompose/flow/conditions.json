@@ -1,0 +1,31 @@
+[
+  {
+    "id": "is_on",
+    "title": { "en": "Box !{{is|isn't}} on", "nl": "Box staat !{{wel|niet}} aan" },
+    "args": [
+      { "name": "device", "type": "device", "filter": "driver_id=mediabox" }
+    ]
+  },
+  {
+    "id": "is_playing",
+    "title": { "en": "Box !{{is|isn't}} playing", "nl": "Box speelt !{{wel|niet}} af" },
+    "args": [
+      { "name": "device", "type": "device", "filter": "driver_id=mediabox" }
+    ]
+  },
+  {
+    "id": "current_channel_is",
+    "title": {
+      "en": "Current channel !{{is|isn't}} [[channel]]",
+      "nl": "Huidige zender !{{is|is niet}} [[channel]]"
+    },
+    "args": [
+      { "name": "device", "type": "device", "filter": "driver_id=mediabox" },
+      {
+        "name": "channel",
+        "type": "autocomplete",
+        "title": { "en": "Channel", "nl": "Zender" }
+      }
+    ]
+  }
+]
