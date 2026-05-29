@@ -120,7 +120,12 @@ export class LGHorizonBox {
   // --- power / playback commands -------------------------------------------
 
   async turnOn(): Promise<void> {
-    if (this.deviceState.state === LGHorizonRunningState.ONLINE_STANDBY) {
+    // Attempt to wake the box for ANY non-running state (standby, network
+    // standby, offline/eco or unknown). The MQTT power key only reaches the box
+    // when it still holds a broker connection (network standby); for deep "eco"
+    // standby the box drops off the network entirely and cannot be woken
+    // remotely — enable "Snel opstarten"/active standby on the box for that.
+    if (this.deviceState.state !== LGHorizonRunningState.ONLINE_RUNNING) {
       await this.sendKeyToBox(MEDIA_KEY_POWER);
     }
   }

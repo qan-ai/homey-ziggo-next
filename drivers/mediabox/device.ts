@@ -121,11 +121,12 @@ export default class MediaboxDevice extends Homey.Device {
   private async _syncFromBox(): Promise<void> {
     const ds = this.box.deviceState;
 
-    if (this.box.isAvailable) {
-      await this.setAvailable().catch(() => undefined);
-    } else {
-      await this.setUnavailable(this.homey.__('errors.box_offline')).catch(() => undefined);
-    }
+    // Keep the device available (controllable) regardless of the box's power
+    // state. When the box goes to standby/eco it reports offline, but we must
+    // still allow "turn on" to be triggered (from the UI or a flow). Genuine
+    // connection problems are handled in onInit / on API failure instead.
+    // The off/standby state is reflected through the onoff capability below.
+    await this.setAvailable().catch(() => undefined);
 
     const isOn = ds.state === LGHorizonRunningState.ONLINE_RUNNING;
     const isPlaying = isOn && !ds.paused;
