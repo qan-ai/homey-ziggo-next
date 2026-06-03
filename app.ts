@@ -116,6 +116,30 @@ export default class ZiggoNextApp extends Homey.App {
     this.log(`[${key}] Reconnect complete`);
   }
 
+  /**
+   * Reconnect every account in use (read from the devices' stored credentials).
+   * Works even when devices are unavailable — invoked from the app settings page.
+   */
+  async reconnectAllAccounts(): Promise<{ accounts: number }> {
+    const usernames = new Set<string>();
+    for (const driverId of ['mediabox', 'recordings']) {
+      let driver: Homey.Driver;
+      try {
+        driver = this.homey.drivers.getDriver(driverId);
+      } catch {
+        continue;
+      }
+      for (const device of driver.getDevices()) {
+        const store = device.getStore() as { username?: string };
+        if (store?.username) usernames.add(store.username.toLowerCase());
+      }
+    }
+    for (const username of usernames) {
+      await this.reconnectAccount(username).catch((e) => this.error('reconnectAll', e));
+    }
+    return { accounts: usernames.size };
+  }
+
   /** Release a device's reference; disconnects the API when the last one leaves. */
   async releaseApi(deviceId: string, username: string): Promise<void> {
     const key = username.toLowerCase();
