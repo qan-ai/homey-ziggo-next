@@ -36,7 +36,7 @@
           btn.disabled = true;
           status.className = '';
           status.textContent = 'Bezig met herverbinden…';
-          Homey.api('POST', '/reconnect', {}, function (err, result) {
+          Homey.api('GET', '/reconnect', null, function (err, result) {
             btn.disabled = false;
             if (err) {
               status.className = 'err';
