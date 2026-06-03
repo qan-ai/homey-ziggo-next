@@ -1,0 +1,8 @@
+{
+  "name": { "en": "Reconnect Ziggo", "nl": "Ziggo herverbinden" },
+  "height": 120,
+  "settings": [],
+  "api": {
+    "reconnect": { "method": "POST", "path": "/reconnect" }
+  }
+}

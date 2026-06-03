@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body { margin: 0; padding: 10px; font-family: -apple-system, system-ui, sans-serif; }
+      button {
+        width: 100%; padding: 13px; font-size: 15px; font-weight: 600;
+        border: none; border-radius: 12px; background: #ec1c24; color: #fff; cursor: pointer;
+      }
+      button:disabled { opacity: 0.6; }
+      #status { margin-top: 8px; font-size: 13px; text-align: center; min-height: 16px; }
+      .ok { color: #1a8f3c; }
+      .err { color: #ec1c24; }
+    </style>
+  </head>
+  <body class="homey-widget">
+    <button id="btn">⟳ Ziggo herverbinden</button>
+    <div id="status"></div>
+
+    <script type="text/javascript">
+      function onHomeyReady(Homey) {
+        Homey.ready();
+        var btn = document.getElementById('btn');
+        var status = document.getElementById('status');
+
+        btn.addEventListener('click', function () {
+          btn.disabled = true;
+          status.className = '';
+          status.textContent = 'Bezig met herverbinden…';
+          if (Homey.hapticFeedback) Homey.hapticFeedback();
+          Homey.api('POST', '/reconnect', {})
+            .then(function (result) {
+              btn.disabled = false;
+              var n = result && result.accounts ? result.accounts : 0;
+              status.className = 'ok';
+              status.textContent = n > 0
+                ? ('Klaar — ' + n + ' account(s) opnieuw verbonden.')
+                : 'Klaar — geen gekoppelde boxen gevonden.';
+            })
+            .catch(function (err) {
+              btn.disabled = false;
+              status.className = 'err';
+              status.textContent = 'Mislukt: ' + (err && err.message ? err.message : err);
+            });
+        });
+      }
+    </script>
+  </body>
+</html>

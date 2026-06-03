@@ -683,6 +683,23 @@
       "id": "recordings"
     }
   ],
+  "widgets": {
+    "reconnect": {
+      "name": {
+        "en": "Reconnect Ziggo",
+        "nl": "Ziggo herverbinden"
+      },
+      "height": 120,
+      "settings": [],
+      "api": {
+        "reconnect": {
+          "method": "POST",
+          "path": "/reconnect"
+        }
+      },
+      "id": "reconnect"
+    }
+  },
   "capabilities": {
     "mediabox_channel": {
       "type": "string",
