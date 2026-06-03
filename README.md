@@ -48,7 +48,7 @@ widgets/reconnect/      Dashboard-widget: roept app.reconnectAllAccounts() aan e
 ## Herverbinden (dashboard-widget)
 
 Na een netwerkwijziging of stroomstoring kan de gedeelde cloud/MQTT-verbinding
-verschralen, waardoor de app de boxen niet meer ziet. De **"Ziggo herverbinden"**-
+wegvallen, waardoor de app de boxen niet meer ziet. De **"Ziggo herverbinden"**-
 widget lost dat op:
 
 1. Voeg op je **Dashboard** de widget **"Ziggo herverbinden"** toe.
