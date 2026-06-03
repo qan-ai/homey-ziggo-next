@@ -107,6 +107,9 @@ export default class ZiggoNextApp extends Homey.App {
         this.error('Reconnect: disconnect failed', err);
       }
       this.accounts.delete(key);
+      // Let the old session/MQTT fully tear down before re-logging in, otherwise
+      // the first re-login tends to fail transiently.
+      await new Promise((r) => this.homey.setTimeout(r, 1500));
     }
     // Re-bind every device on this account (the first one re-creates the shared API).
     const boxes: BoxReport[] = [];

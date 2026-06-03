@@ -57,28 +57,33 @@ export default class MediaboxDevice extends Homey.Device {
     this.log(`Mediabox device "${this.getName()}" initialized`);
   }
 
-  /** (Re)acquire the shared account API. Returns false (and marks unavailable) on failure. */
+  /** (Re)acquire the shared account API, with retries. The first re-login right
+   * after a disconnect can fail transiently, so retry a couple of times. */
   private async _connectApi(): Promise<boolean> {
     const creds = this.getStore() as StoreCreds;
     const deviceId = (this.getData() as { id: string }).id;
-    try {
-      this.api = await this.app.acquireApi(deviceId, {
-        countryCode: creds.countryCode ?? 'nl',
-        username: creds.username,
-        password: creds.password,
-        refreshToken: creds.refreshToken,
-        onRefreshToken: (token) => {
-          this.setStoreValue('refreshToken', token).catch((e) =>
-            this.error('Failed to persist refresh token', e),
-          );
-        },
-      });
-      return true;
-    } catch (err) {
-      this.error('Failed to initialize API', err);
-      await this.setUnavailable(this.homey.__('errors.connection')).catch(() => undefined);
-      return false;
+    const opts = {
+      countryCode: creds.countryCode ?? 'nl',
+      username: creds.username,
+      password: creds.password,
+      refreshToken: creds.refreshToken,
+      onRefreshToken: (token: string) => {
+        this.setStoreValue('refreshToken', token).catch((e) =>
+          this.error('Failed to persist refresh token', e),
+        );
+      },
+    };
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        this.api = await this.app.acquireApi(deviceId, opts);
+        return true;
+      } catch (err) {
+        this.error(`API connect attempt ${attempt + 1}/3 failed`, err);
+        if (attempt < 2) await new Promise((r) => this.homey.setTimeout(r, 2500));
+      }
     }
+    await this.setUnavailable(this.homey.__('errors.connection')).catch(() => undefined);
+    return false;
   }
 
   /** Bind to the (fresh) box for this device and start syncing its state. */
