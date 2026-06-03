@@ -23,6 +23,16 @@ interface AccountEntry {
   refs: Set<string>;
 }
 
+export interface BoxReport {
+  name: string;
+  deviceId: string;
+  status: string;
+}
+export interface AvailableBox {
+  deviceId: string;
+  name: string;
+}
+
 /**
  * Ziggo Next Homey app.
  *
@@ -84,7 +94,9 @@ export default class ZiggoNextApp extends Homey.App {
    * API and re-bind its box. Used by the "Reconnect" button/flow after e.g. a
    * network change leaves the cloud/MQTT link stale.
    */
-  async reconnectAccount(username: string): Promise<void> {
+  async reconnectAccount(
+    username: string,
+  ): Promise<{ boxes: BoxReport[]; available: AvailableBox[] }> {
     const key = username.toLowerCase();
     this.log(`[${key}] Reconnect requested`);
     const entry = this.accounts.get(key);
@@ -97,6 +109,7 @@ export default class ZiggoNextApp extends Homey.App {
       this.accounts.delete(key);
     }
     // Re-bind every device on this account (the first one re-creates the shared API).
+    const boxes: BoxReport[] = [];
     for (const driverId of ['mediabox', 'recordings']) {
       let driver: Homey.Driver;
       try {
@@ -107,20 +120,41 @@ export default class ZiggoNextApp extends Homey.App {
       for (const device of driver.getDevices()) {
         const store = device.getStore() as { username?: string };
         if ((store?.username ?? '').toLowerCase() !== key) continue;
-        const anyDevice = device as unknown as { rebindAfterReconnect?: () => Promise<void> };
+        const anyDevice = device as unknown as { rebindAfterReconnect?: () => Promise<BoxReport> };
         if (typeof anyDevice.rebindAfterReconnect === 'function') {
-          await anyDevice.rebindAfterReconnect().catch((e) => this.error('Reconnect: rebind failed', e));
+          const report = await anyDevice
+            .rebindAfterReconnect()
+            .catch((e): BoxReport => ({ name: device.getName(), deviceId: '?', status: `fout: ${e?.message ?? e}` }));
+          boxes.push(report);
         }
       }
     }
-    this.log(`[${key}] Reconnect complete`);
+    // What boxes does Ziggo actually return for this account now?
+    const available: AvailableBox[] = [];
+    const fresh = this.accounts.get(key);
+    if (fresh) {
+      try {
+        const api = await fresh.ready;
+        for (const box of Object.values(api.getDevices())) {
+          available.push({ deviceId: box.deviceId, name: box.deviceFriendlyName });
+        }
+      } catch (e) {
+        this.error('Reconnect: listing available boxes failed', e);
+      }
+    }
+    this.log(`[${key}] Reconnect complete`, { boxes, available });
+    return { boxes, available };
   }
 
   /**
    * Reconnect every account in use (read from the devices' stored credentials).
-   * Works even when devices are unavailable — invoked from the app settings page.
+   * Returns a per-box report so the widget can show what happened.
    */
-  async reconnectAllAccounts(): Promise<{ accounts: number }> {
+  async reconnectAllAccounts(): Promise<{
+    accounts: number;
+    boxes: BoxReport[];
+    available: AvailableBox[];
+  }> {
     const usernames = new Set<string>();
     for (const driverId of ['mediabox', 'recordings']) {
       let driver: Homey.Driver;
@@ -134,10 +168,17 @@ export default class ZiggoNextApp extends Homey.App {
         if (store?.username) usernames.add(store.username.toLowerCase());
       }
     }
+    const boxes: BoxReport[] = [];
+    const availableMap = new Map<string, AvailableBox>();
     for (const username of usernames) {
-      await this.reconnectAccount(username).catch((e) => this.error('reconnectAll', e));
+      const r = await this.reconnectAccount(username).catch((e) => {
+        this.error('reconnectAll', e);
+        return { boxes: [] as BoxReport[], available: [] as AvailableBox[] };
+      });
+      boxes.push(...r.boxes);
+      for (const a of r.available) availableMap.set(a.deviceId, a);
     }
-    return { accounts: usernames.size };
+    return { accounts: usernames.size, boxes, available: [...availableMap.values()] };
   }
 
   /** Release a device's reference; disconnects the API when the last one leaves. */

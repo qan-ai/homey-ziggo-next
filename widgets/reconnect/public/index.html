@@ -12,11 +12,17 @@
       #status { margin-top: 8px; font-size: 13px; text-align: center; min-height: 16px; }
       .ok { color: #1a8f3c; }
       .err { color: #ec1c24; }
+      #detail { margin-top: 8px; font-size: 12px; line-height: 1.5; }
+      #detail .h { opacity: 0.6; margin-top: 6px; }
+      #detail .good { color: #1a8f3c; }
+      #detail .bad { color: #ec1c24; }
+      #detail code { opacity: 0.55; font-size: 11px; }
     </style>
   </head>
   <body class="homey-widget">
     <button id="btn">⟳ Ziggo herverbinden</button>
     <div id="status"></div>
+    <div id="detail"></div>
 
     <script type="text/javascript">
       function onHomeyReady(Homey) {
@@ -32,11 +38,31 @@
           Homey.api('POST', '/reconnect', {})
             .then(function (result) {
               btn.disabled = false;
-              var n = result && result.accounts ? result.accounts : 0;
+              var n = (result && result.accounts) || 0;
               status.className = 'ok';
-              status.textContent = n > 0
-                ? ('Klaar — ' + n + ' account(s) opnieuw verbonden.')
-                : 'Klaar — geen gekoppelde boxen gevonden.';
+              status.textContent = 'Klaar — ' + n + ' account(s).';
+              var d = document.getElementById('detail');
+              var html = '';
+              var boxes = (result && result.boxes) || [];
+              if (boxes.length) {
+                html += '<div class="h">Jouw boxen:</div>';
+                boxes.forEach(function (b) {
+                  var good = b.status === 'verbonden';
+                  html += '<div class="' + (good ? 'good' : 'bad') + '">' +
+                    (good ? '✓ ' : '✗ ') + b.name + ' — ' + b.status + '</div>';
+                });
+              }
+              var avail = (result && result.available) || [];
+              html += '<div class="h">Ziggo geeft terug:</div>';
+              if (avail.length) {
+                avail.forEach(function (a) {
+                  html += '<div>• ' + a.name + ' <code>' + String(a.deviceId).slice(0, 10) + '…</code></div>';
+                });
+              } else {
+                html += '<div class="bad">(geen boxen — login/cloud-probleem)</div>';
+              }
+              d.innerHTML = html;
+              Homey.setHeight && Homey.setHeight(document.body.scrollHeight + 16);
             })
             .catch(function (err) {
               btn.disabled = false;

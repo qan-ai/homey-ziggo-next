@@ -102,9 +102,12 @@ export default class MediaboxDevice extends Homey.Device {
   }
 
   /** Called by the app after a forced account reconnect: re-acquire + re-bind. */
-  async rebindAfterReconnect(): Promise<void> {
-    if (!(await this._connectApi())) return;
-    await this._bindBox();
+  async rebindAfterReconnect(): Promise<{ name: string; deviceId: string; status: string }> {
+    const deviceId = (this.getData() as { id: string }).id;
+    const name = this.getName();
+    if (!(await this._connectApi())) return { name, deviceId, status: 'cloud-login mislukt' };
+    const ok = await this._bindBox();
+    return { name, deviceId, status: ok ? 'verbonden' : 'box_not_found' };
   }
 
   /** Button/flow entry point: force the whole account to reconnect. */

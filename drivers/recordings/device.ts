@@ -58,9 +58,10 @@ export default class RecordingsDevice extends Homey.Device {
   }
 
   /** Called by the app after a forced account reconnect: re-acquire the fresh API. */
-  async rebindAfterReconnect(): Promise<void> {
+  async rebindAfterReconnect(): Promise<{ name: string; deviceId: string; status: string }> {
     const creds = this.getStore() as StoreCreds;
     const deviceId = (this.getData() as { id: string }).id;
+    const name = this.getName();
     try {
       this.api = await this.app.acquireApi(deviceId, {
         countryCode: creds.countryCode ?? 'nl',
@@ -76,9 +77,12 @@ export default class RecordingsDevice extends Homey.Device {
       if (this.api.hasRecording) {
         await this.setAvailable().catch(() => undefined);
         await this._refresh();
+        return { name, deviceId, status: 'verbonden' };
       }
+      return { name, deviceId, status: 'geen opname-abonnement' };
     } catch (err) {
       this.error('Reconnect (recordings) failed', err);
+      return { name, deviceId, status: `fout: ${(err as Error)?.message ?? err}` };
     }
   }
 
