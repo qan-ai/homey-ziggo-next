@@ -1,4 +1,5 @@
 {
+  "reconnecting": "Herverbinden met Ziggo…",
   "errors": {
     "invalid_credentials": "Ongeldige gebruikersnaam of wachtwoord.",
     "connection": "Kon geen verbinding maken met Ziggo. Probeer het later opnieuw.",

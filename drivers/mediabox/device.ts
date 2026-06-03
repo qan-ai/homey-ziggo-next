@@ -39,9 +39,28 @@ export default class MediaboxDevice extends Homey.Device {
   }
 
   async onInit(): Promise<void> {
+    // Migration: add the reconnect button to already-paired devices.
+    if (!this.hasCapability('mediabox_reconnect')) {
+      await this.addCapability('mediabox_reconnect').catch(() => undefined);
+    }
+    await this._setupAlbumArt();
+    this._registerCapabilityListeners();
+
+    if (!(await this._connectApi())) return;
+    if (!(await this._bindBox())) return;
+
+    await this._refreshQuota();
+    this.quotaTimer = this.homey.setInterval(() => {
+      void this._refreshQuota();
+    }, QUOTA_REFRESH_MS);
+
+    this.log(`Mediabox device "${this.getName()}" initialized`);
+  }
+
+  /** (Re)acquire the shared account API. Returns false (and marks unavailable) on failure. */
+  private async _connectApi(): Promise<boolean> {
     const creds = this.getStore() as StoreCreds;
     const deviceId = (this.getData() as { id: string }).id;
-
     try {
       this.api = await this.app.acquireApi(deviceId, {
         countryCode: creds.countryCode ?? 'nl',
@@ -54,38 +73,45 @@ export default class MediaboxDevice extends Homey.Device {
           );
         },
       });
+      return true;
     } catch (err) {
       this.error('Failed to initialize API', err);
       await this.setUnavailable(this.homey.__('errors.connection')).catch(() => undefined);
-      return;
+      return false;
     }
+  }
 
+  /** Bind to the (fresh) box for this device and start syncing its state. */
+  private async _bindBox(): Promise<boolean> {
+    const deviceId = (this.getData() as { id: string }).id;
     const box = this.api.getDevices()[deviceId];
     if (!box) {
       await this.setUnavailable(this.homey.__('errors.box_not_found')).catch(() => undefined);
-      return;
+      return false;
     }
     this.box = box;
-
-    await this._setupAlbumArt();
-    this._registerCapabilityListeners();
-
     // setCallback publishes MQTT messages; fire-and-forget so a stalled publish
-    // can never block device initialization.
+    // can never block (re)binding.
     this.box
       .setCallback(async () => {
         await this._syncFromBox();
       })
       .catch((e) => this.error('setCallback failed', e));
-
     await this._syncFromBox();
+    return true;
+  }
 
-    await this._refreshQuota();
-    this.quotaTimer = this.homey.setInterval(() => {
-      void this._refreshQuota();
-    }, QUOTA_REFRESH_MS);
+  /** Called by the app after a forced account reconnect: re-acquire + re-bind. */
+  async rebindAfterReconnect(): Promise<void> {
+    if (!(await this._connectApi())) return;
+    await this._bindBox();
+  }
 
-    this.log(`Mediabox device "${this.getName()}" initialized`);
+  /** Button/flow entry point: force the whole account to reconnect. */
+  async reconnect(): Promise<void> {
+    const creds = this.getStore() as StoreCreds;
+    await this.setUnavailable(this.homey.__('reconnecting')).catch(() => undefined);
+    await this.app.reconnectAccount(creds.username);
   }
 
   private async _setupAlbumArt(): Promise<void> {
@@ -115,6 +141,12 @@ export default class MediaboxDevice extends Homey.Device {
     this.registerCapabilityListener('speaker_prev', async () => {
       await this.box.previousChannel();
     });
+
+    if (this.hasCapability('mediabox_reconnect')) {
+      this.registerCapabilityListener('mediabox_reconnect', async () => {
+        await this.reconnect();
+      });
+    }
   }
 
   /** Map the box's current state onto Homey capabilities and fire flow cards. */

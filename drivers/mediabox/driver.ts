@@ -80,6 +80,8 @@ export default class MediaboxDriver extends Homey.Driver {
       this._action(id, async (args) => fn(args.device as MediaboxDevice));
     }
 
+    this._action('reconnect', async (args) => (args.device as MediaboxDevice).reconnect());
+
     this._action(
       'set_channel',
       async (args) => (args.device as MediaboxDevice).box.setChannelById(args.channel.id),

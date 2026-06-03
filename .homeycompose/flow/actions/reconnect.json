@@ -1,0 +1,14 @@
+{
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=mediabox"
+    }
+  ],
+  "id": "reconnect",
+  "title": {
+    "en": "Reconnect to Ziggo",
+    "nl": "Herverbind met Ziggo"
+  }
+}

@@ -422,6 +422,20 @@
             "filter": "driver_id=mediabox"
           }
         ],
+        "id": "reconnect",
+        "title": {
+          "en": "Reconnect to Ziggo",
+          "nl": "Herverbind met Ziggo"
+        }
+      },
+      {
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mediabox"
+          }
+        ],
         "id": "record",
         "title": {
           "en": "Record",
@@ -558,7 +572,8 @@
         "mediabox_channel",
         "mediabox_title",
         "mediabox_source",
-        "mediabox_recording_quota"
+        "mediabox_recording_quota",
+        "mediabox_reconnect"
       ],
       "capabilitiesOptions": {
         "speaker_prev": {
@@ -679,6 +694,21 @@
       "setable": false,
       "uiComponent": "sensor",
       "icon": "/assets/capabilities/channel.svg"
+    },
+    "mediabox_reconnect": {
+      "type": "boolean",
+      "title": {
+        "en": "Reconnect",
+        "nl": "Herverbinden"
+      },
+      "desc": {
+        "en": "Reconnect the boxes to the Ziggo cloud",
+        "nl": "Herverbind de boxen met de Ziggo-cloud"
+      },
+      "getable": false,
+      "setable": true,
+      "uiComponent": "button",
+      "icon": "/assets/icon.svg"
     },
     "mediabox_recording_count": {
       "type": "number",

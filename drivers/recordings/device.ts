@@ -57,6 +57,31 @@ export default class RecordingsDevice extends Homey.Device {
     this.log(`Recordings device "${this.getName()}" initialized`);
   }
 
+  /** Called by the app after a forced account reconnect: re-acquire the fresh API. */
+  async rebindAfterReconnect(): Promise<void> {
+    const creds = this.getStore() as StoreCreds;
+    const deviceId = (this.getData() as { id: string }).id;
+    try {
+      this.api = await this.app.acquireApi(deviceId, {
+        countryCode: creds.countryCode ?? 'nl',
+        username: creds.username,
+        password: creds.password,
+        refreshToken: creds.refreshToken,
+        onRefreshToken: (token) => {
+          this.setStoreValue('refreshToken', token).catch((e) =>
+            this.error('Failed to persist refresh token', e),
+          );
+        },
+      });
+      if (this.api.hasRecording) {
+        await this.setAvailable().catch(() => undefined);
+        await this._refresh();
+      }
+    } catch (err) {
+      this.error('Reconnect (recordings) failed', err);
+    }
+  }
+
   private async _refresh(): Promise<void> {
     try {
       const quota = await this.api.getRecordingQuota();

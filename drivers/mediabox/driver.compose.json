@@ -10,7 +10,8 @@
     "mediabox_channel",
     "mediabox_title",
     "mediabox_source",
-    "mediabox_recording_quota"
+    "mediabox_recording_quota",
+    "mediabox_reconnect"
   ],
   "capabilitiesOptions": {
     "speaker_prev": { "title": { "en": "Previous channel", "nl": "Vorige zender" } },

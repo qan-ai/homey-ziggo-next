@@ -1,4 +1,5 @@
 {
+  "reconnecting": "Reconnecting to Ziggo…",
   "errors": {
     "invalid_credentials": "Invalid username or password.",
     "connection": "Could not connect to Ziggo. Please try again later.",

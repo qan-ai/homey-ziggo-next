@@ -1,0 +1,9 @@
+{
+  "type": "boolean",
+  "title": { "en": "Reconnect", "nl": "Herverbinden" },
+  "desc": { "en": "Reconnect the boxes to the Ziggo cloud", "nl": "Herverbind de boxen met de Ziggo-cloud" },
+  "getable": false,
+  "setable": true,
+  "uiComponent": "button",
+  "icon": "/assets/icon.svg"
+}

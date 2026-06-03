@@ -78,6 +78,44 @@ export default class ZiggoNextApp extends Homey.App {
     return entry.ready;
   }
 
+  /**
+   * Force a full reconnect for an account: disconnect the shared API + MQTT,
+   * drop the entry, then have every device on that account re-acquire a fresh
+   * API and re-bind its box. Used by the "Reconnect" button/flow after e.g. a
+   * network change leaves the cloud/MQTT link stale.
+   */
+  async reconnectAccount(username: string): Promise<void> {
+    const key = username.toLowerCase();
+    this.log(`[${key}] Reconnect requested`);
+    const entry = this.accounts.get(key);
+    if (entry) {
+      try {
+        await entry.api.disconnect();
+      } catch (err) {
+        this.error('Reconnect: disconnect failed', err);
+      }
+      this.accounts.delete(key);
+    }
+    // Re-bind every device on this account (the first one re-creates the shared API).
+    for (const driverId of ['mediabox', 'recordings']) {
+      let driver: Homey.Driver;
+      try {
+        driver = this.homey.drivers.getDriver(driverId);
+      } catch {
+        continue;
+      }
+      for (const device of driver.getDevices()) {
+        const store = device.getStore() as { username?: string };
+        if ((store?.username ?? '').toLowerCase() !== key) continue;
+        const anyDevice = device as unknown as { rebindAfterReconnect?: () => Promise<void> };
+        if (typeof anyDevice.rebindAfterReconnect === 'function') {
+          await anyDevice.rebindAfterReconnect().catch((e) => this.error('Reconnect: rebind failed', e));
+        }
+      }
+    }
+    this.log(`[${key}] Reconnect complete`);
+  }
+
   /** Release a device's reference; disconnects the API when the last one leaves. */
   async releaseApi(deviceId: string, username: string): Promise<void> {
     const key = username.toLowerCase();
