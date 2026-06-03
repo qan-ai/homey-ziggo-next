@@ -73,13 +73,13 @@ export default class MediaboxDevice extends Homey.Device {
         );
       },
     };
-    for (let attempt = 0; attempt < 3; attempt++) {
+    for (let attempt = 0; attempt < 2; attempt++) {
       try {
         this.api = await this.app.acquireApi(deviceId, opts);
         return true;
       } catch (err) {
-        this.error(`API connect attempt ${attempt + 1}/3 failed`, err);
-        if (attempt < 2) await new Promise((r) => this.homey.setTimeout(r, 2500));
+        this.error(`API connect attempt ${attempt + 1}/2 failed`, err);
+        if (attempt < 1) await new Promise((r) => this.homey.setTimeout(r, 1500));
       }
     }
     await this.setUnavailable(this.homey.__('errors.connection')).catch(() => undefined);

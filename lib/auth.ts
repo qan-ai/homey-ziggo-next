@@ -121,15 +121,20 @@ export class LGHorizonAuth {
 
   /** Fetch (or refresh) the access token. */
   async fetchAccessToken(): Promise<void> {
-    this.log('Fetching access token');
+    return this._fetchAccessToken(false);
+  }
+
+  private async _fetchAccessToken(forcePassword: boolean): Promise<void> {
+    this.log('Fetching access token', forcePassword ? '(password fallback)' : '');
     const headers: Record<string, string> = {
       'content-type': 'application/json',
       charset: 'utf-8',
     };
 
+    const usePassword = forcePassword || (!this._useRefreshToken && this._accessToken === null);
     let payload: Record<string, unknown>;
     let path: string;
-    if (!this._useRefreshToken && this._accessToken === null) {
+    if (usePassword) {
       payload = { password: this._password, username: this._username };
       headers['x-device-code'] = 'web';
       path = '/auth-service/v1/authorization';
@@ -156,6 +161,19 @@ export class LGHorizonAuth {
     const authJson: any = await response.json().catch(() => ({}));
     if (!response.ok) {
       const error = authJson?.error;
+      const unauthorized = error && (error.statusCode === 97401 || error.statusCode === 97402);
+
+      // Self-heal: a stale/invalid refresh token (e.g. after the box was offline)
+      // shouldn't lock us out — clear it and log in with username/password instead.
+      if (!usePassword && unauthorized && this._password && !forcePassword) {
+        this.log('Refresh-token login failed; clearing token and retrying with password');
+        this._refreshToken = '';
+        this._useRefreshToken = false;
+        this._accessToken = null;
+        if (this.tokenRefreshCallback) this.tokenRefreshCallback('');
+        return this._fetchAccessToken(true);
+      }
+
       if (error && error.statusCode === 97401) {
         throw new LGHorizonApiUnauthorizedError('Invalid credentials');
       }
