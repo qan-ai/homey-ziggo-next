@@ -18,6 +18,14 @@ een TypeScript-port naar de Homey Apps SDK v3 van de Home Assistant-integratie
 - **Opnames-sensor** (apart apparaat per account): opnameruimte-gebruik (%) en aantal opnames
 - Flow-kaarten: triggers (aan/uit, zender gewijzigd, pauze/hervat, nu-te-zien),
   condities (staat aan / speelt af / huidige zender) en bovenstaande acties
+- **Dashboard-widget "Ziggo herverbinden"** — knop die de cloud/MQTT-verbinding
+  ververst en de boxen opnieuw bindt, met een **diagnostisch overzicht** per box
+  (verbonden / box_not_found / login mislukt) plus de boxen die Ziggo teruggeeft.
+  Werkt vanaf het dashboard, óók als de apparaat-tegels onbereikbaar zijn.
+- **Herverbinden** ook als tegel-knop én als flow-actie ("Herverbind met Ziggo")
+- **Zelfherstellende login**: een verlopen refresh-token (bijv. na een stroomstoring
+  van de box) wordt automatisch gewist en vervangen door een verse
+  gebruikersnaam/wachtwoord-login
 
 ## Architectuur
 
@@ -33,7 +41,24 @@ lib/                    Getrouwe TS-port van de lghorizon Python-library:
   models.ts             channels, sources, recordings, EPG, device-state, ...
 drivers/mediabox/       Homey driver + device (capability-mapping, flow, pairing)
 drivers/recordings/     Account-niveau sensor: opnameruimte (%) en aantal opnames
+widgets/reconnect/      Dashboard-widget: roept app.reconnectAllAccounts() aan en toont
+                        het per-box rapport (widget.compose.json + api.js + public/index.html)
 ```
+
+## Herverbinden (dashboard-widget)
+
+Na een netwerkwijziging of stroomstoring kan de gedeelde cloud/MQTT-verbinding
+verschralen, waardoor de app de boxen niet meer ziet. De **"Ziggo herverbinden"**-
+widget lost dat op:
+
+1. Voeg op je **Dashboard** de widget **"Ziggo herverbinden"** toe.
+2. Eén tik → de app verbreekt de gedeelde verbinding, logt vers in en **bindt alle
+   boxen opnieuw** (`app.reconnectAllAccounts()`).
+3. De widget toont per box de status en welke boxen Ziggo teruggeeft, zodat een
+   verlopen sessie of een ID-mismatch direct zichtbaar is.
+
+De herverbind zit ook op de mediabox-tegel (knop) en als flow-actie, zodat je 'm
+kunt automatiseren (bijv. dagelijks of na een Homey-herstart).
 
 ## Ontwikkelen
 
