@@ -58,7 +58,7 @@ export class LGHorizonAuth {
   private _tokenExpiry: number | null = null;
   private readonly _countryCode: string;
   private readonly _host: string;
-  private readonly _useRefreshToken: boolean;
+  private _useRefreshToken: boolean;
   private _serviceConfig: LGHorizonServicesConfig | null = null;
 
   tokenRefreshCallback: TokenRefreshCallback | null;
